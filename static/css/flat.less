@@ -1,0 +1,224 @@
+
+@import '../vendor/lesshat/lesshat';
+@import 'utils';
+@import 'variables';
+
+
+// Variables
+// =========
+
+@brand-color-lighter : #C389CA;
+@brand-color         : #AB12C0;
+@brand-color-darker  : #6D0A7A;
+
+@header-primary-bg-color   : @brand-color;
+@header-secondary-bg-color : @brand-color;
+@footer-bg-color           : @brand-color;
+
+@component-lr-padding : 20px;
+
+@font-size-1 : 28px;
+@font-size-2 : 20px;
+@font-size-3 : 14px;
+
+
+// Styles
+// ======
+
+body {
+  .default-font();
+}
+
+.header {
+
+  &.primary {
+    background     : @header-primary-bg-color;
+    border-bottom  : 1px solid rgba(255,255,255,0.35);
+    color          : white;
+    font-size      : @font-size-1;
+    font-weight    : 600;
+    letter-spacing : 1px;
+    line-height    : 85px;
+    padding        : 0 @component-lr-padding;
+  }
+
+  &.secondary {
+    .box-shadow(0 1px 2px rgba(0,0,0,0.25));
+    background : @header-secondary-bg-color;
+    color      : white;
+    font-size  : @font-size-2;
+  }
+}
+
+.panels {
+
+  .panel {
+
+    &.left .header {
+      border-right : 1px solid rgba(255,255,255,0.35);
+    }
+
+    &.right .map {
+      border-left : 1px solid white;
+      margin-left : -1px;
+    }
+  }
+}
+
+.search {
+  @width-of-label : 140px;
+
+  label {
+    cursor     : pointer;
+    float      : left;
+    width      : @width-of-label;
+    text-align : center;
+    opacity    : 0.75;
+    padding    : 0;
+  }
+
+  .input {
+    .box-shadow(inset 0 2px 5px rgba(0,0,0,0.15));
+    .transition(background @animation-duration);
+    background : fade(white, 85%);
+    border     : none;
+    float      : left;
+    font-size  : @font-size-2;
+    outline    : none;
+    width      : calc(~"100% - @{width-of-label}");
+
+    &.focus {
+      background : white;
+    }
+
+    input {
+      .default-font();
+      background  : none;
+      border      : none;
+      color       : #111;
+      cursor      : pointer;
+      font-size   : 20px;
+      font-weight : bold;
+      height      : 100%;
+      line-height : 30px;
+      outline     : none;
+      padding     : 0 15px;
+      width       : 100%;
+
+      .placeholder-text(@brand-color-lighter, normal);
+    }
+  }
+}
+
+.footer {
+  background : @footer-bg-color;
+  color      : white;
+  font-size  : @font-size-3;
+  padding    : 0 @component-lr-padding;
+
+  .instructions {
+    opacity : 0.75;
+  }
+
+  .footer-buttons {
+
+    .footer-button {
+      @border-color                    : fade(black, 35%);
+      @gradient-top-color              : fade(white, 35%);
+      @gradient-bottom-color           : transparent;
+      @highlight-top-color             : fade(white, 35%);
+      @highlight-side-color            : fade(white, 15%);
+      @impressed-color                 : fade(black, 15%);
+      @impressed-gradient-top-color    : fade(black, 15%);
+      @impressed-gradient-bottom-color : transparent;
+      @hover-color                     : fade(white, 35%);
+      @impressed-highlight-top-color   : fade(black, 25%);
+      @impressed-highlight-side-color  : fade(black, 10%);
+      @text-shadow-color               : rgba(0,0,0,0.5);
+
+      // Mixins
+      // ------
+
+      .inner-glow(@top-color, @side-color) {
+        .box-shadow(
+          inset 0 1px 0 @top-color,
+          inset 1px 0 0 @side-color,
+          inset -1px 0 0 @side-color
+        );
+      }
+
+      // Styles
+      // ------
+
+      .background-image(
+        linear-gradient(to bottom, @gradient-top-color 0%, @gradient-bottom-color 100%)
+      );
+      .inner-glow(@highlight-top-color, @highlight-side-color);
+      .transition(background @animation-duration);
+      border-left     : 1px solid @border-color;
+      cursor          : pointer;
+      font-size       : 16px;
+      margin-top      : 1px; // Show a top border
+      padding         : 0 @component-lr-padding;
+      text-decoration : none;
+
+      // Exceptions
+      // ----------
+
+      &:last-child {
+        border-right : 1px solid @border-color;
+      }
+
+      // States
+      // ------
+
+      &:hover {
+        background-color : rgba(255,255,255,0.1);
+      }
+
+      &:active {
+
+        .footer-button-content {
+          .transform(translateY(1px));
+        }
+      }
+
+      &.is-impressed {
+        .background-image(
+          linear-gradient(to bottom, @impressed-gradient-top-color 0%, @impressed-gradient-bottom-color 100%)
+        );
+        .inner-glow(@impressed-highlight-top-color, @impressed-highlight-side-color);
+        .transition(none);
+        background-color : @impressed-color;
+
+        .show-by-default {
+          display : none;
+        }
+
+        .show-when-impressed {
+          display : initial;
+        }
+      }
+
+      // Children
+      // --------
+
+      .show-by-default {
+        display : initial;
+      }
+
+      .show-when-impressed {
+        display : none;
+      }
+
+      .footer-button-icon {
+        margin-right : 5px;
+        opacity      : 0.75;
+      }
+
+      .footer-button-label {
+        text-shadow : 0 1px 2px @text-shadow-color;
+      }
+    }
+  }
+}

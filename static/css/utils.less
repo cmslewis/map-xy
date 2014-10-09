@@ -1,0 +1,40 @@
+
+.absolute-fill() {
+  position : absolute;
+  top      : 0;
+  right    : 0;
+  bottom   : 0;
+  left     : 0;
+}
+
+.default-font() {
+  font-family : 'Proxima Nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.height-with-vertically-centered-text(@height, @padding-top:0, @padding-bottom:0) {
+  height      : @height;
+  line-height : @height - (@padding-top + @padding-bottom);
+}
+
+.placeholder-text(@color, @font-weight:normal) {
+
+  &::-webkit-input-placeholder {
+    color       : @color;
+    font-weight : @font-weight;
+  }
+
+  &:-moz-placeholder {
+    color       : @color;
+    font-weight : @font-weight;
+  }
+
+  &::-moz-placeholder {
+    color       : @color;
+    font-weight : @font-weight;
+  }
+
+  &:-ms-input-placeholder {
+    color       : @color;
+    font-weight : @font-weight;
+  }
+}

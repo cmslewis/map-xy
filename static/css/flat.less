@@ -7,19 +7,62 @@
 // Variables
 // =========
 
-@brand-color-lighter : #C389CA;
-@brand-color         : #AB12C0;
-@brand-color-darker  : #6D0A7A;
+@brand-color-primary         : #398C39; //#AB12C0;
+// @brand-color-primary-lighter : lighten(@brand-color-primary, 20%); //#C389CA;
+@brand-color-secondary       : #D5C7BA;
 
-@header-primary-bg-color   : @brand-color;
-@header-secondary-bg-color : @brand-color;
-@footer-bg-color           : @brand-color;
+@header-primary-bg-color   : @brand-color-primary;
+@header-secondary-bg-color : @brand-color-secondary;
+@footer-bg-color           : @brand-color-secondary;
+
+@header-secondary-text-color : #665C51;
 
 @component-lr-padding : 20px;
 
 @font-size-1 : 28px;
 @font-size-2 : 20px;
 @font-size-3 : 14px;
+
+@border-color                    : fade(black, 35%);
+@gradient-top-color              : fade(white, 35%);
+@gradient-bottom-color           : transparent;
+@highlight-top-color             : fade(white, 35%);
+@highlight-side-color            : fade(white, 15%);
+@impressed-color                 : fade(black, 15%);
+@impressed-gradient-top-color    : fade(black, 15%);
+@impressed-gradient-bottom-color : transparent;
+@hover-color                     : fade(white, 35%);
+@impressed-highlight-top-color   : fade(black, 25%);
+@impressed-highlight-side-color  : fade(black, 10%);
+@text-shadow-color               : rgba(255, 255, 255, 0.5);
+
+
+// Mixins
+// ======
+
+.inner-glow(@top-color, @side-color) {
+  .box-shadow(
+    inset 0 1px 0 @top-color,
+    inset 1px 0 0 @side-color,
+    inset -1px 0 0 @side-color
+  );
+}
+
+.emboss(@higlight-intensity:60%, @shadow-intensity:15%) {
+  .box-shadow(inset 0 2px 2px fade(white, @higlight-intensity), inset 0 -2px 2px fade(black, @shadow-intensity));
+  text-shadow : 0 1px 2px @text-shadow-color;
+}
+
+.bevel-outward(@highlight-intensity:35%) {
+  .background-image(
+    linear-gradient(to bottom, fade(white, @highlight-intensity) 0%, transparent 100%)
+  );
+  .inner-glow(@highlight-top-color, @highlight-side-color);
+}
+
+.bevel-inward() {
+
+}
 
 
 // Styles
@@ -32,21 +75,24 @@ body {
 .header {
 
   &.primary {
-    background     : @header-primary-bg-color;
-    border-bottom  : 1px solid rgba(255,255,255,0.35);
-    color          : white;
-    font-size      : @font-size-1;
-    font-weight    : 600;
-    letter-spacing : 1px;
-    line-height    : 85px;
-    padding        : 0 @component-lr-padding;
+    // .emboss(@higlight-intensity:0%);
+    background-color : @header-primary-bg-color;
+    border-bottom    : 1px solid rgba(0,0,0,0.5);
+    color            : white;
+    font-size        : @font-size-1;
+    font-weight      : 600;
+    letter-spacing   : 1px;
+    line-height      : 85px;
+    padding          : 0 @component-lr-padding;
   }
 
   &.secondary {
-    .box-shadow(0 1px 2px rgba(0,0,0,0.25));
-    background : @header-secondary-bg-color;
-    color      : white;
-    font-size  : @font-size-2;
+    // .emboss();
+    // .box-shadow(0 1px 2px rgba(0,0,0,0.25));
+    background-color : @header-secondary-bg-color;
+    border-bottom    : 1px solid rgba(0,0,0,0.35);
+    color            : @header-secondary-text-color;
+    font-size        : @font-size-2;
   }
 }
 
@@ -58,9 +104,16 @@ body {
       border-right : 1px solid rgba(255,255,255,0.35);
     }
 
-    &.right .map {
-      border-left : 1px solid white;
-      margin-left : -1px;
+    &.right {
+
+      .header {
+        border-left : 1px solid fade(black, 35%);
+      }
+
+      .map {
+        border-left : 1px solid white;
+        margin-left : -1px;
+      }
     }
   }
 }
@@ -78,9 +131,9 @@ body {
   }
 
   .input {
-    .box-shadow(inset 0 2px 5px rgba(0,0,0,0.15));
+    // .box-shadow(inset 0 2px 5px rgba(0,0,0,0.15));
     .transition(background @animation-duration);
-    background : fade(white, 85%);
+    background : fade(white, 75%);
     border     : none;
     float      : left;
     font-size  : @font-size-2;
@@ -105,14 +158,16 @@ body {
       padding     : 0 15px;
       width       : 100%;
 
-      .placeholder-text(@brand-color-lighter, normal);
+      .placeholder-text(@brand-color-secondary, normal);
     }
   }
 }
 
 .footer {
+  // .emboss();
+  border-top : 1px solid rgba(0,0,0,0.35);
   background : @footer-bg-color;
-  color      : white;
+  color      : @header-secondary-text-color;
   font-size  : @font-size-3;
   padding    : 0 @component-lr-padding;
 
@@ -123,44 +178,19 @@ body {
   .footer-buttons {
 
     .footer-button {
-      @border-color                    : fade(black, 35%);
-      @gradient-top-color              : fade(white, 35%);
-      @gradient-bottom-color           : transparent;
-      @highlight-top-color             : fade(white, 35%);
-      @highlight-side-color            : fade(white, 15%);
-      @impressed-color                 : fade(black, 15%);
-      @impressed-gradient-top-color    : fade(black, 15%);
-      @impressed-gradient-bottom-color : transparent;
-      @hover-color                     : fade(white, 35%);
-      @impressed-highlight-top-color   : fade(black, 25%);
-      @impressed-highlight-side-color  : fade(black, 10%);
-      @text-shadow-color               : rgba(0,0,0,0.5);
-
-      // Mixins
-      // ------
-
-      .inner-glow(@top-color, @side-color) {
-        .box-shadow(
-          inset 0 1px 0 @top-color,
-          inset 1px 0 0 @side-color,
-          inset -1px 0 0 @side-color
-        );
-      }
 
       // Styles
       // ------
 
-      .background-image(
-        linear-gradient(to bottom, @gradient-top-color 0%, @gradient-bottom-color 100%)
-      );
-      .inner-glow(@highlight-top-color, @highlight-side-color);
+      // .bevel-outward();
       .transition(background @animation-duration);
       border-left     : 1px solid @border-color;
       cursor          : pointer;
       font-size       : 16px;
-      margin-top      : 1px; // Show a top border
+      // margin-top      : 1px; // Show a top border
       padding         : 0 @component-lr-padding;
       text-decoration : none;
+      text-shadow     : none;
 
       // Exceptions
       // ----------
@@ -173,7 +203,7 @@ body {
       // ------
 
       &:hover {
-        background-color : rgba(255,255,255,0.1);
+        background-color : rgba(255,255,255,0.2);
       }
 
       &:active {
@@ -190,6 +220,7 @@ body {
         .inner-glow(@impressed-highlight-top-color, @impressed-highlight-side-color);
         .transition(none);
         background-color : @impressed-color;
+        color            : white;
 
         .show-by-default {
           display : none;
@@ -197,6 +228,10 @@ body {
 
         .show-when-impressed {
           display : initial;
+        }
+
+        .footer-button-label {
+          text-shadow : 0 1px 2px fade(black, 25%);
         }
       }
 

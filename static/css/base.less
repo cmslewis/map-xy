@@ -15,6 +15,8 @@
 @z-index-of-panels : 1;
 @z-index-of-footer : 2;
 
+@panel-right-stacked-width : 60%;
+
 
 // Reset
 // =====
@@ -60,9 +62,15 @@ body {
 
   .panel {
     .absolute-fill();
+    .transition(all @animation-duration);
     position : absolute;
     right    : auto;
     width    : 50%;
+
+    .header {
+      .transition(all @animation-duration);
+      width : 100%;
+    }
 
     &.right {
       left : 50%;
@@ -79,6 +87,10 @@ body {
 
       &.left {
 
+        .header {
+          width : 80%; // 80% of 50% is 40% of the whole width
+        }
+
         .map {
           right : auto;
           width : 200%;
@@ -86,6 +98,8 @@ body {
       }
 
       &.right {
+        left  : 100% - @panel-right-stacked-width;
+        width : @panel-right-stacked-width;
 
         .map {
           .box-shadow(-1px 0 2px rgba(0,0,0,0.25));

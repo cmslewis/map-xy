@@ -8,12 +8,21 @@
 }
 
 .default-font() {
-  font-family : 'Proxima Nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family : 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .height-with-vertically-centered-text(@height, @padding-top:0, @padding-bottom:0) {
   height      : @height;
   line-height : @height - (@padding-top + @padding-bottom);
+}
+
+.no-select() {
+  -webkit-touch-callout : none;
+  -webkit-user-select   : none;
+  -khtml-user-select    : none;
+  -moz-user-select      : none;
+  -ms-user-select       : none;
+  user-select           : none;
 }
 
 .placeholder-text(@color, @font-weight:normal) {

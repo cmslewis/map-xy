@@ -7,15 +7,16 @@
 // Variables
 // =========
 
-@brand-color-primary         : #4FbC71; // #398C39; //#AB12C0;
-// @brand-color-primary-lighter : lighten(@brand-color-primary, 20%); //#C389CA;
-@brand-color-secondary       : white;
+@brand-color-primary   : #45AF66; // #398C39; //#AB12C0;
+@brand-color-secondary : white;
 
 @header-primary-bg-color   : @brand-color-primary;
 @header-secondary-bg-color : @brand-color-secondary;
 @footer-bg-color           : @brand-color-secondary;
 
 @header-secondary-text-color : #504438; // #665C51;
+
+@footer-tb-padding : 5px;
 
 @component-lr-padding : 20px;
 
@@ -24,18 +25,8 @@
 @font-size-3 : 16px;
 @font-size-4 : 14px;
 
-@border-color                    : fade(black, 35%);
-@gradient-top-color              : fade(white, 35%);
-@gradient-bottom-color           : transparent;
-@highlight-top-color             : fade(white, 35%);
-@highlight-side-color            : fade(white, 15%);
-@impressed-color                 : @header-secondary-text-color;
-@impressed-gradient-top-color    : fade(black, 15%);
-@impressed-gradient-bottom-color : transparent;
-@hover-color                     : fade(white, 35%);
-@impressed-highlight-top-color   : fade(black, 25%);
-@impressed-highlight-side-color  : fade(black, 10%);
-@text-shadow-color               : rgba(255, 255, 255, 0.5);
+@impressed-color        : @header-secondary-text-color;
+@impressed-border-color : darken(@impressed-color, 15%);
 
 
 // Styles
@@ -55,7 +46,6 @@ body {
     letter-spacing   : 1px;
     line-height      : 85px;
     padding          : 0 @component-lr-padding;
-    text-shadow      : 0 1px 2px fade(black, 35%);
   }
 
   &.secondary {
@@ -138,10 +128,10 @@ body {
 
 .footer {
   .box-shadow(0 -1px 3px fade(black, 25%));
-  background : @footer-bg-color;
-  color      : @header-secondary-text-color;
-  font-size  : @font-size-4;
-  padding    : 0 @component-lr-padding;
+  background  : @footer-bg-color;
+  color       : @header-secondary-text-color;
+  font-size   : @font-size-4;
+  padding     : 0 @component-lr-padding;
 
   .footer-buttons {
 
@@ -150,14 +140,16 @@ body {
       // Styles
       // ------
 
+      .border-radius(3px);
       .transition(none);
       background      : #f5f0ec;
+      border          : 1px solid #D3CEC8;
       cursor          : pointer;
       font-size       : @font-size-3;
-      margin-left     : 1px;
+      line-height     : @footer-height - 2 * (@footer-tb-padding + 1);
+      margin          : 5px 0 5px 5px;
       padding         : 0 @component-lr-padding;
       text-decoration : none;
-      text-shadow     : none;
 
       // Exceptions
       // ----------
@@ -182,6 +174,7 @@ body {
 
       &.is-impressed {
         background-color : @impressed-color;
+        border-color     : @impressed-border-color;
         color            : white;
 
         .show-by-default {
@@ -207,10 +200,6 @@ body {
       .footer-button-icon {
         margin-right : 5px;
         opacity      : 0.75;
-      }
-
-      .footer-button-label {
-        text-shadow : 0 1px 2px @text-shadow-color;
       }
     }
   }

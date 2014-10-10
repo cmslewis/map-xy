@@ -14,7 +14,8 @@
 @header-secondary-bg-color : @brand-color-secondary;
 @footer-bg-color           : @brand-color-secondary;
 
-@header-secondary-text-color : #504438; // #665C51;
+@default-text-color : #504438;
+@muted-text-color   : #B6B0AB;
 
 @footer-tb-padding : 5px;
 
@@ -25,8 +26,10 @@
 @font-size-3 : 16px;
 @font-size-4 : 14px;
 
-@impressed-color        : @header-secondary-text-color;
+@impressed-color        : @default-text-color;
 @impressed-border-color : darken(@impressed-color, 15%);
+
+@recenter-button-width : 40px;
 
 
 // Styles
@@ -45,14 +48,20 @@ body {
     font-weight      : 600;
     letter-spacing   : 1px;
     line-height      : 85px;
-    padding          : 0 @component-lr-padding;
+    padding          : 14px @component-lr-padding 0;
+
+    .title {
+      font-size   : 24px;
+      font-weight : 300;
+      line-heigth : 1.2;
+    }
   }
 
   &.secondary {
     .box-shadow(0 1px 3px fade(black, 25%));
     background-color : @header-secondary-bg-color;
     border-bottom    : 1px solid fade(black, 35%);
-    color            : @header-secondary-text-color;
+    color            : @default-text-color;
     font-size        : @font-size-2;
   }
 }
@@ -91,6 +100,9 @@ body {
   }
 
   .input {
+    @input-margin : 10px;
+    @input-height : calc(~"100% - 20px");
+
     .transition(background @animation-duration);
     background : fade(white, 75%);
     border     : none;
@@ -103,9 +115,34 @@ body {
       background : white;
     }
 
-    input {
-      @input-margin : 10px;
+    .recenter-button {
+      .transform(translateY(-50%));
+      cursor       : pointer;
+      display      : none;
+      line-height  : 1;
+      margin-right : @input-margin;
+      padding      : 10px 0;
+      position     : absolute;
+      right        : 0;
+      top          : 50%;
+      width        : @recenter-button-width;
+      text-align   : center;
 
+      &.is-enabled {
+        display : block;
+        color   : @muted-text-color;
+
+        &:hover {
+          color : @default-text-color;
+        }
+
+        &:active {
+          margin-top : 1px;
+        }
+      }
+    }
+
+    input {
       .border-radius(3px);
       .default-font();
       background  : none;
@@ -114,14 +151,14 @@ body {
       cursor      : pointer;
       font-size   : @font-size-3;
       font-weight : bold;
-      height      : calc(~"100% - 20px");
+      height      : @input-height;
       line-height : 1.4;
       margin      : @input-margin @input-margin @input-margin 0;
       outline     : none;
-      padding     : 0 10px;
+      padding     : 0 @recenter-button-width 0 10px;
       width       : calc(~"100% - 10px");
 
-      .placeholder-text(#B6B0AB, 300);
+      .placeholder-text(@muted-text-color, 300);
     }
   }
 }
@@ -129,21 +166,43 @@ body {
 .footer {
   .box-shadow(0 -1px 3px fade(black, 25%));
   background  : @footer-bg-color;
-  color       : @header-secondary-text-color;
+  color       : @default-text-color;
   font-size   : @font-size-4;
   padding     : 0 @component-lr-padding;
+
+  .bottom-text {
+
+    .dot-separator {
+      color       : @muted-text-color;
+      font-weight : 300;
+      margin      : 0 3px;
+    }
+
+    .author-link {
+      color           : @muted-text-color;
+      font-weight     : 300;
+      text-decoration : none;
+
+      &:hover {
+        text-decoration : underline;
+      }
+    }
+  }
 
   .footer-buttons {
 
     .footer-button {
+
+      @button-bg-color     : #F5F0EC;
+      @button-border-color : #DBD4CC;
 
       // Styles
       // ------
 
       .border-radius(3px);
       .transition(none);
-      background      : #f5f0ec;
-      border          : 1px solid #D3CEC8;
+      background      : @button-bg-color;
+      border          : 1px solid @button-border-color;
       cursor          : pointer;
       font-size       : @font-size-3;
       line-height     : @footer-height - 2 * (@footer-tb-padding + 1);

@@ -1,4 +1,10 @@
 
+var mapX = null;
+var mapY = null;
+
+var currentPlaceOnMapX = null;
+var currentPlaceOnMapY = null;
+
 var wasZoomChangeDoneProgrammatically = false;
 
 var KeyCodes = {
@@ -24,15 +30,18 @@ var $ui = {
   mapY               : $('.js-map-y'),
   autocompleteX      : $('.js-autocomplete-x'),
   autocompleteY      : $('.js-autocomplete-y'),
+  recenterTriggers   : $('.recenter-button'),
+  recenterTriggerX   : $('.js-recenter-trigger-x'),
+  recenterTriggerY   : $('.js-recenter-trigger-y'),
   autocompleteFields : $('.search input'),
   autocompleteLabels : $('.search label')
 };
 
 function initialize() {
-  maps = initializeMaps(SF_COORDINATES, NY_COORDINATES);
+  var maps = initializeMaps(SF_COORDINATES, NY_COORDINATES);
 
-  mapX = maps[0]
-  mapY = maps[1]
+  mapX = maps[0];
+  mapY = maps[1];
 
   initializeButtons(mapX, mapY);
   initializeSearch(mapX, $ui.autocompleteX, $ui.autocompleteY);
@@ -59,8 +68,8 @@ function initializeMaps(mapXInitialCoords, mapYInitialCoords) {
   var mapXOptions = getMapOptions(mapXInitialCoords);
   var mapYOptions = getMapOptions(mapYInitialCoords);
 
-  var mapX = new google.maps.Map($ui.mapX[0], mapXOptions);
-  var mapY = new google.maps.Map($ui.mapY[0], mapYOptions);
+  mapX = new google.maps.Map($ui.mapX[0], mapXOptions);
+  mapY = new google.maps.Map($ui.mapY[0], mapYOptions);
 
   propagateZoomLevel(mapX, mapY);
   propagateZoomLevel(mapY, mapX);
@@ -110,6 +119,7 @@ function initializeSearch(map, $input, $nextInput) {
     var place = autocomplete.getPlace();
 
     if (place.geometry) {
+      saveCurrentPlaceOnMap(map, place);
       recenterMapAndChangeFocus(map, place, $input, $nextInput);
     } else {
 
@@ -134,6 +144,7 @@ function initializeSearch(map, $input, $nextInput) {
           if (_status !== google.maps.places.PlacesServiceStatus.OK) {
             return;
           }
+          saveCurrentPlaceOnMap(map, _place);
           recenterMapAndChangeFocus(map, _place, $input, $nextInput);
           $input.val(_place.formatted_address);
         });
@@ -143,6 +154,9 @@ function initializeSearch(map, $input, $nextInput) {
 }
 
 function initializeButtons(mapX, mapY) {
+
+  // 'Stacked Mode' Trigger
+  // ----------------------
 
   $ui.stackedModeTrigger.on('click', function() {
     if ($ui.panels.attr('data-view-mode') === 'stacked') {
@@ -154,9 +168,27 @@ function initializeButtons(mapX, mapY) {
     }
 
     // We need to let the Maps API know when the size of the Map X container changes.
-    console.log('triggering mapX resize');
     google.maps.event.trigger(mapX, 'resize');
   });
+
+  $ui.stackedModeTrigger.on('mouseenter', function() {
+    if ($ui.panels.attr('data-view-mode') === 'stacked') {
+      return;
+    } else {
+      $ui.panels.attr('data-view-mode', 'stacked-preview');
+    }
+  });
+
+  $ui.stackedModeTrigger.on('mouseleave', function() {
+    if ($ui.panels.attr('data-view-mode') === 'stacked') {
+      return;
+    } else {
+      $ui.panels.attr('data-view-mode', '');
+    }
+  });
+
+  // 'Switch Maps' Trigger
+  // ---------------------
 
   $ui.switchMapsTrigger.on('click', function() {
     var newMapXCenter = mapY.getCenter();
@@ -170,12 +202,29 @@ function initializeButtons(mapX, mapY) {
     $ui.autocompleteY.val(newAutocompleteYText);
   });
 
+  // Autocomplete Fields
+  // -------------------
+
   $ui.autocompleteFields.on('focus', function() { $(this).closest('.input').addClass('focus'); });
   $ui.autocompleteFields.on('blur',  function() { $(this).closest('.input').removeClass('focus'); });
 
   $ui.autocompleteLabels.on('click', function() {
     $ui.autocompleteFields.blur();
     $(this).siblings('.input').find('input').focus();
+  });
+
+  $ui.autocompleteX.on('keyup', function(ev) {
+    if ($(this).val().length === 0) {
+      currentPlaceOnMapX = null;
+      disableRecenterTrigger($ui.recenterTriggerX);
+    }
+  });
+
+  $ui.autocompleteY.on('keyup', function(ev) {
+    if ($(this).val().length === 0) {
+      currentPlaceOnMapY = null;
+      disableRecenterTrigger($ui.recenterTriggerY);
+    }
   });
 
   // Some elements within the maps are visible in the tabbing order. This ensures that tabbing only toggles focus
@@ -187,20 +236,63 @@ function initializeButtons(mapX, mapY) {
       $ui.autocompleteX.focus();
     }
   });
+
+  // Recenter Triggers
+  // -----------------
+
+  activateRecenterTrigger($ui.recenterTriggerX, mapX);
+  activateRecenterTrigger($ui.recenterTriggerY, mapY);
+}
+
+function saveCurrentPlaceOnMap(map, place) {
+  if (map === mapX) {
+    currentPlaceOnMapX = place;
+    enableRecenterTrigger($ui.recenterTriggerX);
+  } else if (map == mapY) {
+    currentPlaceOnMapY = place;
+    enableRecenterTrigger($ui.recenterTriggerY);
+  }
 }
 
 function recenterMapAndChangeFocus(map, place, $input, $nextInput) {
-    if (place.geometry.viewport) {
-      map.fitBounds(place.geometry.viewport);
-    } else {
-      map.setCenter(place.geometry.location);
-    }
+    centerMapOnPlace(map, place);
 
     $input.blur();
-
     if ($nextInput != null) {
       $nextInput.focus();
     }
+}
+
+function activateRecenterTrigger($trigger, map) {
+  $trigger.on('click', function() {
+    if (map === mapX) {
+      centerMapOnPlaceIfNecessary(mapX, currentPlaceOnMapX);
+    } else if (map === mapY) {
+      centerMapOnPlaceIfNecessary(mapY, currentPlaceOnMapY);
+    }
+  });
+}
+
+function enableRecenterTrigger($trigger) {
+  $trigger.addClass('is-enabled');
+}
+
+function disableRecenterTrigger($trigger) {
+  $trigger.removeClass('is-enabled');
+}
+
+function centerMapOnPlaceIfNecessary(map, place) {
+  if (place != null) {
+    centerMapOnPlace(map, place);
+  }
+}
+
+function centerMapOnPlace(map, place) {
+  if (place.geometry.viewport) {
+    map.fitBounds(place.geometry.viewport);
+  } else {
+    map.setCenter(place.geometry.location);
+  }
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

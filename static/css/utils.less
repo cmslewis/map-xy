@@ -1,3 +1,8 @@
+//
+// utils.less
+// ==========
+// A set of common utility mixins for use in other LESS files.
+//
 
 .absolute-fill() {
   position : absolute;
@@ -16,13 +21,13 @@
   line-height : @height - (@padding-top + @padding-bottom);
 }
 
-.no-select() {
-  -webkit-touch-callout : none;
-  -webkit-user-select   : none;
-  -khtml-user-select    : none;
-  -moz-user-select      : none;
-  -ms-user-select       : none;
-  user-select           : none;
+.user-select(@value) {
+  -webkit-touch-callout : @value;
+  -webkit-user-select   : @value;
+  -khtml-user-select    : @value;
+  -moz-user-select      : @value;
+  -ms-user-select       : @value;
+  user-select           : @value;
 }
 
 .placeholder-text(@color, @font-weight:normal) {

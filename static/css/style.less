@@ -1,3 +1,8 @@
+//
+// base.less
+// =========
+// A set of styles that give the page its detailed visual style.
+//
 
 @import '../vendor/lesshat/lesshat';
 @import 'utils';
@@ -7,29 +12,20 @@
 // Variables
 // =========
 
-@brand-color-primary   : #45AF66; // #398C39; //#AB12C0;
-@brand-color-secondary : white;
+@brand-green : #45AF66;
+@brand-brown : #504438;
+@brand-tan   : #B6B0AB;
 
-@header-primary-bg-color   : @brand-color-primary;
-@header-secondary-bg-color : @brand-color-secondary;
-@footer-bg-color           : @brand-color-secondary;
+@default-text-color : @brand-brown;
+@muted-text-color   : @brand-tan;
 
-@default-text-color : #504438;
-@muted-text-color   : #B6B0AB;
-
-@footer-tb-padding : 5px;
+@brand-font-size-1 : 28px;
+@brand-font-size-2 : 24px;
+@brand-font-size-3 : 20px;
+@brand-font-size-4 : 16px;
+@brand-font-size-5 : 14px;
 
 @component-lr-padding : 20px;
-
-@font-size-1 : 28px;
-@font-size-2 : 20px;
-@font-size-3 : 16px;
-@font-size-4 : 14px;
-
-@impressed-color        : @default-text-color;
-@impressed-border-color : darken(@impressed-color, 15%);
-
-@recenter-button-width : 40px;
 
 
 // Styles
@@ -42,27 +38,36 @@ body {
 .header {
 
   &.primary {
-    background-color : @header-primary-bg-color;
+    background-color : @brand-green;
     color            : white;
-    font-size        : @font-size-1;
+    font-size        : @brand-font-size-1;
     font-weight      : 600;
     letter-spacing   : 1px;
-    line-height      : 85px;
     padding          : 14px @component-lr-padding 0;
 
     .title {
-      font-size   : 24px;
+      font-size   : @brand-font-size-2;
       font-weight : 300;
-      line-heigth : 1.2;
+      line-height : 1.2;
+      opacity     : 0.85;
+
+      span {
+        border-bottom : 1px dashed fade(white, 75%);
+        cursor        : pointer;
+
+        &:hover {
+          border-bottom-style : solid;
+        }
+      }
     }
   }
 
   &.secondary {
     .box-shadow(0 1px 3px fade(black, 25%));
-    background-color : @header-secondary-bg-color;
+    background-color : white;
     border-bottom    : 1px solid fade(black, 35%);
     color            : @default-text-color;
-    font-size        : @font-size-2;
+    font-size        : @brand-font-size-3;
   }
 }
 
@@ -85,12 +90,13 @@ body {
 }
 
 .search {
-  @width-of-label : 140px;
+  @width-of-label           : 140px;
+  @width-of-recenter-button : 40px;
 
   label {
     cursor         : pointer;
     float          : left;
-    font-size      : @font-size-3;
+    font-size      : @brand-font-size-4;
     font-weight    : bold;
     width          : @width-of-label;
     text-align     : center;
@@ -107,7 +113,7 @@ body {
     background : fade(white, 75%);
     border     : none;
     float      : left;
-    font-size  : @font-size-2;
+    font-size  : @brand-font-size-3;
     outline    : none;
     width      : calc(~"100% - @{width-of-label}");
 
@@ -125,7 +131,7 @@ body {
       position     : absolute;
       right        : 0;
       top          : 50%;
-      width        : @recenter-button-width;
+      width        : @width-of-recenter-button;
       text-align   : center;
 
       &.is-enabled {
@@ -143,31 +149,41 @@ body {
     }
 
     input {
+      @border-width                : 1px;
+      @extra-border-width-on-focus : 1px;
+      @padding-left                : 10px;
+
       .border-radius(3px);
       .default-font();
       background  : none;
-      border      : 1px solid rgba(0,0,0,0.15);
+      border      : @border-width solid fade(@brand-brown, 25%);
       color       : #111;
       cursor      : pointer;
-      font-size   : @font-size-3;
+      font-size   : @brand-font-size-4;
       font-weight : bold;
       height      : @input-height;
       line-height : 1.4;
       margin      : @input-margin @input-margin @input-margin 0;
       outline     : none;
-      padding     : 0 @recenter-button-width 0 10px;
-      width       : calc(~"100% - 10px");
+      padding     : 0 @width-of-recenter-button 0 @padding-left;
+      width       : calc(~"100% - @{padding-left}");
 
       .placeholder-text(@muted-text-color, 300);
+
+      &:focus {
+        border-color : fade(@brand-brown, 75%);
+        border-width : @border-width + @extra-border-width-on-focus;
+        padding      : 0 (@width-of-recenter-button - @extra-border-width-on-focus) 0 (@padding-left - @extra-border-width-on-focus);
+      }
     }
   }
 }
 
 .footer {
   .box-shadow(0 -1px 3px fade(black, 25%));
-  background  : @footer-bg-color;
+  background  : white;
   color       : @default-text-color;
-  font-size   : @font-size-4;
+  font-size   : @brand-font-size-5;
   padding     : 0 @component-lr-padding;
 
   .bottom-text {
@@ -193,8 +209,13 @@ body {
 
     .footer-button {
 
-      @button-bg-color     : #F5F0EC;
-      @button-border-color : #DBD4CC;
+      @button-bg-color               : #F5F0EC;
+      @button-border-color           : #DBD4CC;
+      @button-icon-margin            : 5px;
+      @button-icon-opacity           : 0.75;
+      @button-impressed-color        : @brand-brown;
+      @button-impressed-border-color : darken(@button-impressed-color, 15%);
+      @button-margin                 : 5px;
 
       // Styles
       // ------
@@ -204,9 +225,9 @@ body {
       background      : @button-bg-color;
       border          : 1px solid @button-border-color;
       cursor          : pointer;
-      font-size       : @font-size-3;
-      line-height     : @footer-height - 2 * (@footer-tb-padding + 1);
-      margin          : 5px 0 5px 5px;
+      font-size       : @brand-font-size-4;
+      line-height     : @footer-height - 2 * (@button-margin + 1);
+      margin          : @button-margin 0 @button-margin @button-margin;
       padding         : 0 @component-lr-padding;
       text-decoration : none;
 
@@ -221,7 +242,7 @@ body {
       // ------
 
       &:hover {
-        background-color : lighten(#f5f0ec, 2%);
+        background-color : lighten(@button-bg-color, 2%);
       }
 
       &:active {
@@ -232,8 +253,8 @@ body {
       }
 
       &.is-impressed {
-        background-color : @impressed-color;
-        border-color     : @impressed-border-color;
+        background-color : @button-impressed-color;
+        border-color     : @button-impressed-border-color;
         color            : white;
 
         .show-by-default {
@@ -257,8 +278,8 @@ body {
       }
 
       .footer-button-icon {
-        margin-right : 5px;
-        opacity      : 0.75;
+        margin-right : @button-icon-margin;
+        opacity      : @button-icon-opacity;
       }
     }
   }

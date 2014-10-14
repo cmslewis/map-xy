@@ -197,22 +197,6 @@ $(document).ready(function() {
       google.maps.event.trigger(mapX, 'resize');
     });
 
-    $ui.stackedModeTrigger.on('mouseenter', function() {
-      if ($ui.panels.attr('data-view-mode') === 'stacked') {
-        return;
-      } else {
-        $ui.panels.attr('data-view-mode', 'stacked-preview');
-      }
-    });
-
-    $ui.stackedModeTrigger.on('mouseleave', function() {
-      if ($ui.panels.attr('data-view-mode') === 'stacked') {
-        return;
-      } else {
-        $ui.panels.attr('data-view-mode', '');
-      }
-    });
-
     // 'Switch Maps' Trigger
     // ---------------------
 

@@ -93,6 +93,8 @@ body {
   @width-of-label           : 140px;
   @width-of-recenter-button : 40px;
 
+  height : 100%;
+
   label {
     cursor         : pointer;
     float          : left;
@@ -114,6 +116,7 @@ body {
     border     : none;
     float      : left;
     font-size  : @brand-font-size-3;
+    height     : 100%;
     outline    : none;
     width      : calc(~"100% - @{width-of-label}");
 
@@ -159,6 +162,7 @@ body {
       border      : @border-width solid fade(@brand-brown, 25%);
       color       : #111;
       cursor      : pointer;
+      display     : block;
       font-size   : @brand-font-size-4;
       font-weight : bold;
       height      : @input-height;

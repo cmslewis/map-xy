@@ -288,3 +288,43 @@ body {
     }
   }
 }
+
+
+@media(max-width : 768px) {
+
+  .header {
+
+    &.primary {
+      font-size   : 20px;
+      padding-top : 10px;
+
+      .title {
+        font-size : 18px;
+      }
+    }
+  }
+
+  .search {
+
+    label {
+      display : none;
+    }
+
+    .input {
+      @input-margin : 10px;
+
+      display : block;
+      float   : none;
+      width   : auto;
+
+      input {
+        @padding-left  : 10px;
+        @padding-right : 10px;
+
+        display : block;
+        margin  : @input-margin;
+        width   : calc(~"100% - @{padding-left} - @{padding-right}");
+      }
+    }
+  }
+}

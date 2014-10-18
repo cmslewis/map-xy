@@ -37,7 +37,7 @@
 body {
   .absolute-fill();
   cursor    : default;
-  min-width : 768px;
+  // min-width : 768px;
 }
 
 .header {
@@ -186,6 +186,55 @@ body {
       .instructions, .dot-separator {
         display : none;
       }
+    }
+  }
+}
+
+@media(max-width : 768px) {
+
+  @mobile-header-secondary-height : 46px;
+  @mobile-footer-height           : 46px;
+
+  .header {
+
+    &.secondary {
+      .height-with-vertically-centered-text(@mobile-header-secondary-height);
+    }
+  }
+
+  .map {
+    top : @mobile-header-secondary-height;
+  }
+
+  // Stack panels vertically.
+
+  .panels {
+    bottom : @mobile-footer-height;
+
+    .panel {
+      height : 50%;
+      right  : 0;
+      width  : auto;
+
+
+      &.left {
+        bottom : auto;
+      }
+
+      &.right {
+        left : 0;
+        top  : auto;
+      }
+    }
+  }
+
+  // Disable footer buttons.
+
+  .footer {
+    .height-with-vertically-centered-text(@mobile-footer-height);
+
+    .footer-buttons {
+      display : none;
     }
   }
 }

@@ -11,11 +11,13 @@
   <meta name="description" content="A little app for exploring relative sizes between cities, countries, and places in general. Finally, you can see exactly how big SF is relative to Manhattan, or how big your hometown is relative to India (spoiler: India is bigger). Created by Chris Lewis because he was always wondering.">
 
   <!-- Facebook Sharing -->
-  <meta property="og:image"       content="http://cmslewis.github.io/map-xy/static/img/share.jpg"/>
+  <meta property="fb:admins"      content="cmslewis"/>
   <meta property="article:author" content="https://www.facebook.com/cmslewis" />
+  <meta property="og:image"       content="http://cmslewis.github.io/map-xy/static/img/share.jpg"/>
   <meta property="og:title"       content="Map XY" />
   <meta property="og:site_name"   content="Chris Lewis" />
   <meta property="og:url"         content="http://cmslewis.github.io/map-xy/" />
+  <meta property="og:type"        content="website" />
   <meta property="og:description" content="A little app for exploring relative sizes between cities, countries, and places in general. Finally, you can see exactly how big SF is relative to Manhattan, or how big your hometown is relative to India (spoiler: India is bigger). Created by Chris Lewis because he was always wondering." />
 
   <!-- Stylesheets -->
@@ -30,14 +32,23 @@
   <!-- Facebook SDK -->
   <!-- ============ -->
 
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "http://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '898410613515960',
+        xfbml      : true,
+        version    : 'v2.1'
+      });
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
 
 
   <!-- Twitter SDK -->
@@ -103,8 +114,20 @@
       </div>
     </div>
     <span class="bottom-text">
-      <div class="fb-like" data-href="http://cmslewis.github.io/map-xy/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
-      <a class="twitter-share-button" href="https://twitter.com/share" data-url="http://cmslewis.github.io/map-xy/" data-text="Map XY">Tweet</a>
+<!--       <div class="fb-like" data-href="http://cmslewis.github.io/map-xy/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div> -->
+      <div
+        class="fb-like"
+        data-share="true"
+        data-width="450"
+        data-show-faces="true">
+      </div>
+      <a
+        class="twitter-share-button"
+        href="https://twitter.com/share"
+        data-url="http://cmslewis.github.io/map-xy/"
+        data-text="Map XY">
+        Tweet
+      </a>
       <span class="instructions">The scale will stay consistent between the maps as you explore!</span>
       <span class="dot-separator">·</span>
       <a class="author-link" href="https://github.com/cmslewis" target="_blank">by cmslewis</a>
